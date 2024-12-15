@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Details Candidate</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #444;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    }
+    h1 {
+      color: #2c3e50;
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+    .job-details p {
+      font-size: 16px;
+    }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 20px;
+    }
+    .skills span {
+      display: inline-block;
+      background: #007bff;
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .skills span:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+    .recruiter-info {
+      border-top: 1px solid #eaeaea;
+      padding-top: 15px;
+      margin-top: 20px;
+    }
+    .recruiter-info p {
+      font-size: 15px;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .skills span {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+    }
+    /* Popup styling */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #28a745;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      text-align: center;
+      transition: opacity 0.5s ease;
+      z-index: 9999;
+    }
+
+    .popup p {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    /* Adding a fade-in effect */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    /*nav style*/
+    .navbar {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-left {
+      display: flex;
+      gap: 20px;
+    }
+    .navbar-left a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .navbar-left a:hover {
+      text-decoration: underline;
+    }
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+    .navbar-right img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .navbar-right .dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      width: 200px;
+    }
+    .navbar-right .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .navbar-right .dropdown a:hover {
+      background-color: #f4f4f4;
+    }
+    /*skill style*/
+    .job-skills span {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    .match-skill {
+      background: green;
+      color: white;
+    }
+    .non-match-skill {
+      background: red;
+      color: white;
+    }
+
+    .btn-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <div class="navbar-left">
+    <a href="/candidatehomeall">All</a>
+    <a href="/candidatehome">Suitable job</a>
+  </div>
+  <div class="navbar-right">
+    <span class="username" th:text="${session.user.fullname}"></span>
+    <img src="https://cdn-media.sforum.vn/storage/app/media/THANHAN/avatar-trang-65.jpg" alt="Avatar" onclick="toggleDropdown()">
+    <div class="dropdown" id="userDropdown">
+      <a href="/candidateinfo">My Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <h1 th:text="${job.jobName}"></h1>
+  <div class="job-details">
+    <p><strong>Company:</strong> <span th:text="${job.company.compName}"></span></p>
+    <p><strong>Description:</strong> <span th:text="${job.jobDesc}"></span></p>
+    <p><strong>Skills Required:</strong></p>
+    <div class="job-skills">
+        <span th:each="skill : ${job.skills}"
+              th:classappend="${#lists.contains(candidateSkills, skill.skillName) ? ' match-skill' : ' non-match-skill'}"
+              th:text="${skill.skillName}"></span>
+    </div>
+    <a th:href="@{/email/{jobId}(jobId=${job.id})}" class="btn-link">Apply</a>
+  </div>
+  <div class="recruiter-info">
+    <p><strong>Recruiter Information:</strong></p>
+    <p><strong>Email:</strong> <span th:text="${job.company.email}"></span></p>
+    <p><strong>Phone:</strong> <span th:text="${job.company.phone}"></span></p>
+  </div>
+
+  <!-- Popup message -->
+  <div id="successPopup" class="popup">
+    <p>Email sent successfully</p>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  function toggleDropdown() {
+    var dropdown = document.getElementById('userDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.navbar-right img')) {
+      var dropdown = document.getElementById('userDropdown');
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+      }
+    }
+  }
+
+  /*<![CDATA[*/
+  /* Check if flash attribute exists */
+  var updateSuccess = [[${updateSuccess}]];
+  if (updateSuccess) {
+    var popup = document.getElementById("successPopup");
+    popup.classList.add("fade-in");
+    popup.style.display = "block";
+    setTimeout(function() {
+      popup.style.display = "none";
+    }, 3000); // Hide after 3 seconds
+  }
+  /*]]>*/
+</script>
+</body>
+</html>

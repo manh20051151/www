@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register Company</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+    .container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    .form-group input {
+      width: 97%;
+      padding: 11px 0px 10px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form-group input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .form-group button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .form-group button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Register Company</h1>
+  <form th:action="@{/registerCompany}" method="post" th:object="${accountCreateRequest2}">
+
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" th:field="*{username}" placeholder="Enter your username" required />
+    </div>
+
+
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" th:field="*{password}" placeholder="Enter your password" required />
+    </div>
+
+    <div class="form-group">
+      <label for="compName">Company Name:</label>
+      <input type="text" id="compName" name="compName" th:field="*{compName}" placeholder="Enter your company name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="about">About:</label>
+      <input type="text" id="about" name="about" th:field="*{about}" placeholder="Short description about your company" />
+    </div>
+
+
+    <div class="form-group">
+      <label for="webUrl">Website URL:</label>
+      <input type="text" id="webUrl" name="webUrl" th:field="*{webUrl}" placeholder="Enter your company website" />
+    </div>
+
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email" th:field="*{email}" placeholder="Enter your email" required />
+    </div>
+
+
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" th:field="*{phone}" placeholder="Enter your phone number" required />
+    </div>
+
+
+    <div class="form-group">
+      <button type="submit">Register</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

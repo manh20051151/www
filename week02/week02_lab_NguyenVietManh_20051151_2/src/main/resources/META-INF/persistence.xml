@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="my-pu"  transaction-type="JTA">
+        <jta-data-source>jdbc/maria</jta-data-source>
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create"/> <!-- Hoặc create -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
+            <property name="hibernate.archive.autodetect" value="class, hbm"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="jakarta.persistence.sql-load-script-source" value="META-INF/defaultdata.sql"/>
+        </properties>
+    </persistence-unit>
+
+<!--    <persistence-unit name="jpa-mariadb">-->
+<!--        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
+<!--        <class>com.example.week02_lab_nguyenvietmanh_20051151.backend.entities.Customer</class>-->
+<!--        <class>com.example.week02_lab_nguyenvietmanh_20051151.backend.entities.OrderDetail</class>-->
+<!--        <class>com.example.week02_lab_nguyenvietmanh_20051151.backend.entities.Order</class>-->
+<!--        <class>com.example.week02_lab_nguyenvietmanh_20051151.backend.entities.Product</class>-->
+<!--        <class>com.example.week02_lab_nguyenvietmanh_20051151.backend.entities.ProductPrice</class>-->
+<!--        <class>com.example.week02_lab_nguyenvietmanh_20051151.backend.entities.Employee</class>-->
+<!--        <class>com.example.week02_lab_nguyenvietmanh_20051151.backend.entities.ProductImage</class>-->
+
+<!--        <properties>-->
+<!--            <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>-->
+<!--            <property name="jakarta.persistence.jdbc.dialect" value="org.hibernate.dialect.MariaDBDialect"/>-->
+<!--            <property name="hibernate.connection.url" value="jdbc:mariadb://localhost:3307/week02"/>-->
+<!--            <property name="hibernate.connection.username" value="root"/>-->
+<!--            <property name="hibernate.connection.password" value="sapassword"/>-->
+<!--            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
+<!--            <property name="hibernate.show_sql" value="true"/>-->
+<!--            <property name="hibernate.format_sql" value="true"/>-->
+<!--        </properties>-->
+<!--    </persistence-unit>-->
+</persistence>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Job</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    .form-group input, .form-group textarea {
+      width: 96%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form-group textarea {
+      resize: vertical;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .form-group button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .form-group button:hover {
+      background-color: #0056b3;
+    }
+    .checkbox-group {
+      margin: 10px 0;
+    }
+    .checkbox-group label {
+      margin-right: 10px;
+    }
+    /* Navbar style */
+    .navbar {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-left {
+      display: flex;
+      gap: 20px;
+    }
+    .navbar-left a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .navbar-left a:hover {
+      text-decoration: underline;
+    }
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+    .navbar-right img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .navbar-right .dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      width: 200px;
+    }
+    .navbar-right .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .navbar-right .dropdown a:hover {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <div class="navbar-left">
+    <a href="/companyhomealljob">All</a>
+    <a href="/companyhome">My Job</a>
+  </div>
+  <div class="navbar-right">
+    <span class="username" th:text="${session.user.compName}"></span>
+    <img src="https://cdn-media.sforum.vn/storage/app/media/THANHAN/avatar-trang-65.jpg" alt="Avatar" onclick="toggleDropdown()">
+    <div class="dropdown" id="userDropdown">
+      <a href="/companyinfo">My Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Edit Job</h1>
+  <form th:action="@{/updatejob/{jobId}(jobId=${job.id})}" method="post">
+    <div class="form-group">
+      <label for="jobName">Job Name:</label>
+      <input type="text" id="jobName" name="jobName" placeholder="Enter job name" th:value="${job.jobName}" required />
+    </div>
+
+    <div class="form-group">
+      <label for="jobDesc">Job Description:</label>
+      <textarea id="jobDesc" name="jobDesc" rows="5" placeholder="Enter job description" th:text="${job.jobDesc}" required></textarea>
+    </div>
+
+    <div>
+      <label>Skills:</label>
+      <div class="checkbox-group" th:each="skill : ${skills}">
+        <label>
+          <input type="checkbox" th:value="${skill.id}" name="skillIds" th:text="${skill.skillName}"
+                 th:checked="${#arrays.contains(job.skills, skill)}"/>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button type="submit">Save Changes</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function toggleDropdown() {
+    var dropdown = document.getElementById('userDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.navbar-right img')) {
+      var dropdown = document.getElementById('userDropdown');
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+      }
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply for Job</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 80%;
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .form-group textarea {
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .form-group button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .form-group button:hover {
+      background-color: #0056b3;
+    }
+    .job-title {
+      text-align: center;
+      color: #007bff;
+    }
+    /*nav style*/
+    .navbar {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-left {
+      display: flex;
+      gap: 20px;
+    }
+    .navbar-left a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .navbar-left a:hover {
+      text-decoration: underline;
+    }
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+    .navbar-right img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .navbar-right .dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      width: 200px;
+    }
+    .navbar-right .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .navbar-right .dropdown a:hover {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <div class="navbar-left">
+    <a href="/candidatehomeall">All</a>
+    <a href="/candidatehome">Suitable job</a>
+  </div>
+  <div class="navbar-right">
+    <span class="username" th:text="${session.user.fullname}"></span>
+    <img src="https://cdn-media.sforum.vn/storage/app/media/THANHAN/avatar-trang-65.jpg" alt="Avatar" onclick="toggleDropdown()">
+    <div class="dropdown" id="userDropdown">
+      <a href="/candidateinfo">My Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <h1>Apply for Job</h1>
+
+  <h2 class="job-title" th:text="${job.jobName}"></h2>
+  <form th:action="@{/applyjob}" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="emailTitle">Title:</label>
+      <input type="text" id="emailTitle" name="emailTitle" placeholder="Enter the email title" required />
+    </div>
+
+    <div class="form-group">
+      <label for="emailContent">Content:</label>
+      <textarea id="emailContent" name="emailContent" rows="5" placeholder="Enter the email content" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="attachment">Attach your file CV:</label>
+      <input type="file" id="attachment" name="attachment" />
+    </div>
+
+    <input type="hidden" name="jobId" th:value="${job.id}" />
+
+    <div class="form-group">
+      <button type="submit">Send Application</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Job Listings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .navbar {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-left {
+      display: flex;
+      gap: 20px;
+    }
+    .navbar-left a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .navbar-left a:hover {
+      text-decoration: underline;
+    }
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+    .navbar-right img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .navbar-right .dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      width: 200px;
+    }
+    .navbar-right .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .navbar-right .dropdown a:hover {
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .job-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .job-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      flex: 1 1 calc(50% - 20px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .job-card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .job-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #007bff;
+      margin: 0 0 10px;
+    }
+    .job-company {
+      font-size: 14px;
+      color: #555;
+      margin: 0 0 10px;
+    }
+    .job-description {
+      font-size: 14px;
+      color: #666;
+      margin: 0 0 10px;
+    }
+    .job-skills span {
+      display: inline-block;
+      background: #007bff;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    .btn-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+    .btn-container {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    /* Popup styling */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #28a745;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      text-align: center;
+      transition: opacity 0.5s ease;
+      z-index: 9999;
+    }
+
+    .popup p {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    /* Adding a fade-in effect */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    .search-container {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .search-form {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-input {
+      width: 300px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .search-button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .search-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <div class="navbar-left">
+    <a href="/companyhomealljob">All</a>
+    <a href="/companyhome">My job</a>
+  </div>
+  <div class="navbar-right">
+    <span class="username" th:text="${session.user.compName}"></span>
+    <img src="https://cdn-media.sforum.vn/storage/app/media/THANHAN/avatar-trang-65.jpg" alt="Avatar" onclick="toggleDropdown()">
+    <div class="dropdown" id="userDropdown">
+      <a href="/companyinfo">My Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <h1>Job Listings</h1>
+  <div class="search-container">
+    <form action="/search" method="GET" class="search-form">
+      <input type="text" name="keyword" class="search-input" placeholder="Search for jobs..." />
+      <button type="submit" class="search-button">Search</button>
+    </form>
+  </div>
+  <div class="btn-container">
+    <a href="/addjob" class="btn">Post job</a>
+  </div>
+  <div class="job-list">
+    <div class="job-card" th:each="job, stat : ${jobs}"
+         th:onclick="'window.location.href=\'/details/' + ${job.id} + '\';'">
+
+      <h2 class="job-title" th:text="${job.jobName}"></h2>
+      <p class="job-company" th:text="${job.company.compName}"></p>
+      <p class="job-description" th:text="${job.jobDesc}"></p>
+      <div class="job-skills">
+        <span th:each="skill : ${job.skills}" th:text="${skill.skillName}"></span>
+      </div>
+      <a th:if="${job.company.id == session.user.id}" th:href="@{/candidates/{jobId}(jobId=${job.id})}" class="btn-link">Suitable candidate</a>
+    </div>
+  </div>
+  <!-- Popup message -->
+  <div id="successPopup" class="popup">
+    <p>Email sent successfully</p>
+  </div>
+
+  <div id="deletePopup" class="popup">
+    <p>Delete job successfully</p>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  function toggleDropdown() {
+    var dropdown = document.getElementById('userDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.navbar-right img')) {
+      var dropdown = document.getElementById('userDropdown');
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+      }
+    }
+  }
+
+  /*<![CDATA[*/
+  /* Check if flash attribute exists */
+  var updateSuccess = [[${updateSuccess}]];
+  var deleteSuccess = [[${deleteSuccess}]];
+  if (updateSuccess) {
+    var popup = document.getElementById("successPopup");
+    popup.classList.add("fade-in");
+    popup.style.display = "block";
+    setTimeout(function() {
+      popup.style.display = "none";
+    }, 3000);
+  }
+  if (deleteSuccess) {
+    var popup = document.getElementById("deletePopup");
+    popup.classList.add("fade-in");
+    popup.style.display = "block";
+    setTimeout(function() {
+      popup.style.display = "none";
+    }, 3000);
+  }
+  /*]]>*/
+</script>
+</body>
+</html>
