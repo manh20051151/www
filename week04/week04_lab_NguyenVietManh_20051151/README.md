@@ -1,0 +1,5 @@
+![](https://github.com/manh20051151/www/blob/master/week04/week04_lab_NguyenVietManh_20051151/img/Screenshot%202024-11-08%20041633.png)
+![](https://github.com/manh20051151/www/blob/master/week04/week04_lab_NguyenVietManh_20051151/img/Screenshot%202024-11-08%20041824.png)
+![](https://github.com/manh20051151/www/blob/master/week04/week04_lab_NguyenVietManh_20051151/img/Screenshot%202024-11-08%20042024.png)
+![](https://github.com/manh20051151/www/blob/master/week04/week04_lab_NguyenVietManh_20051151/img/Screenshot%202024-11-08%20042101.png)
+![](https://github.com/manh20051151/www/blob/master/week04/week04_lab_NguyenVietManh_20051151/img/Screenshot%202024-11-08%20042139.png)
